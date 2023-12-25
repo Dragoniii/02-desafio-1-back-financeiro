@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const dinheiroController_1 = require("../controllers/dinheiroController");
+const dinheiroRouter = (0, express_1.Router)();
+dinheiroRouter.get("/", dinheiroController_1.dinheiroRoot);
+dinheiroRouter.post("/addDinheiro", dinheiroController_1.addDinheiro);
+dinheiroRouter.get("/dinheiroList", dinheiroController_1.dinheiroList);
+dinheiroRouter.put("/updateDinheiro", dinheiroController_1.updateDinheiro);
+dinheiroRouter.delete("/deleteDinheiro", dinheiroController_1.deleteDinheiroByQuery);
+exports.default = dinheiroRouter;

@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const creditoController_1 = require("../controllers/creditoController");
+const creditoRouter = (0, express_1.Router)();
+creditoRouter.get("/", creditoController_1.creditoRoot);
+creditoRouter.post("/addCredito", creditoController_1.addCredito);
+creditoRouter.get("/creditoList", creditoController_1.creditoList);
+creditoRouter.put("/updateCredito", creditoController_1.updateCredito);
+creditoRouter.delete("/deleteCredito", creditoController_1.deleteCreditoByQuery);
+exports.default = creditoRouter;

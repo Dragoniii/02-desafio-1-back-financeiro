@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const valeController_1 = require("../controllers/valeController");
+const valeRouter = (0, express_1.Router)();
+valeRouter.get("/", valeController_1.valeRoot);
+valeRouter.post("/addVale", valeController_1.addVale);
+valeRouter.get("/valeList", valeController_1.valeList);
+valeRouter.put("/updateVale", valeController_1.updateVale);
+valeRouter.delete("/deleteVale", valeController_1.deleteValeByQuery);
+exports.default = valeRouter;

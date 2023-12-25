@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const debitoController_1 = require("../controllers/debitoController");
+const debitoRouter = (0, express_1.Router)();
+debitoRouter.get("/", debitoController_1.debitoRoot);
+debitoRouter.post("/addDebito", debitoController_1.addDebito);
+debitoRouter.get("/debitoList", debitoController_1.debitoList);
+debitoRouter.put("/updateDebito", debitoController_1.updateDebito);
+debitoRouter.delete("/deleteDebito", debitoController_1.deleteDebitoByQuery);
+exports.default = debitoRouter;

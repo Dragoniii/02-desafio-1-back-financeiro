@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const supportsITController_1 = require("../controllers/supportsITController");
+const supportsITRouter = (0, express_1.Router)();
+supportsITRouter.get("/", supportsITController_1.supportsITRoot);
+supportsITRouter.post("/addSupportIT", supportsITController_1.addSupportIT);
+supportsITRouter.get("/supportsITList", supportsITController_1.supportsITList);
+supportsITRouter.put("/updateSupportIT", supportsITController_1.updateSupportIT);
+supportsITRouter.delete("/deleteSupportIT", supportsITController_1.deleteSupportITByQuery);
+exports.default = supportsITRouter;
