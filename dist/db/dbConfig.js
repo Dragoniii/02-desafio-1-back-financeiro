@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDbConnection = void 0;
 const sqlite3 = require("sqlite3").verbose();
-const filePath = "./db/school.db";
+const filePath = "./db/financeiro.db";
 const createDbConnection = () => {
     let db = new sqlite3.Database(filePath, (error) => {
         if (error) {

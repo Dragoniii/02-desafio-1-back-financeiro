@@ -8,7 +8,7 @@ const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
 let db = (0, dbConfig_1.createDbConnection)();
 const dinheiroRoot = (req, res) => {
-    res.send("Página Inicial Dinheiro");
+    res.send("Página Inicial das Movimetações em Dinheiro");
 };
 exports.dinheiroRoot = dinheiroRoot;
 const addDinheiro = (req, res) => {
@@ -22,11 +22,11 @@ const addDinheiro = (req, res) => {
                 if (error) {
                     res.end(error.message);
                 }
-                res.send(`Dinheiro Adicionado`);
+                res.send(`Movimentação adicionada.`);
             });
         }
         else {
-            res.send("Erro na criação da Movimentação. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     }
     else {
@@ -60,7 +60,7 @@ const updateDinheiro = (req, res) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("SupportIT Updated");
+        res.send("Movimentação atualizada com sucesso.");
     });
 };
 exports.updateDinheiro = updateDinheiro;
@@ -72,7 +72,7 @@ const deleteDinheiroByQuery = (req, res) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Dinheiro deletado");
+        res.send("Movimentação deletada com sucesso.");
     });
 };
 exports.deleteDinheiroByQuery = deleteDinheiroByQuery;

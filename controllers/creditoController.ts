@@ -7,7 +7,7 @@ import logger from "../services/logger";
 let db: Database = createDbConnection();
 
 const creditoRoot = (req: Request, res: Response) => {
-    res.send("Página Inicial Cartão de Crédito");
+    res.send("Página Inicial dos Cartões de Crédito");
 }
 
 const addCredito = (req: Request, res: Response) => {
@@ -27,10 +27,10 @@ const addCredito = (req: Request, res: Response) => {
                     if (error) {
                         res.end(error.message);
                     }
-                    res.send(`Movimentação adicionada`);
+                    res.send(`Movimentação adicionada.`);
                 })
         } else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     } else {
         res.sendStatus(403);
@@ -69,20 +69,20 @@ const updateCredito = (req: Request, res: Response) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Crédito Updated");
+        res.send("Movimentação atualizada com sucesso.");
     });
 }
 
 const deleteCreditoByQuery = (req: Request, res: Response) => {
     logger.info(req);
     let id = req.query.id;
-    let sql = `DELETE from professionals WHERE id="${id}"`;
+    let sql = `DELETE from credito WHERE id="${id}"`;
 
     db.all(sql, [], (error: Error) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Credito Deleted");
+        res.send("Movimentação deletada com sucesso.");
     })
 }
 

@@ -2,7 +2,7 @@
 import { Database, sqlite3 } from "sqlite3";
 
 const sqlite3 = require("sqlite3").verbose();
-const filePath: string = "./db/school.db";
+const filePath: string = "./db/financeiro.db";
 
 const createDbConnection = () => {
     let db: Database = new sqlite3.Database(filePath, (error: Error) => {

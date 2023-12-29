@@ -8,7 +8,7 @@ const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
 let db = (0, dbConfig_1.createDbConnection)();
 const creditoRoot = (req, res) => {
-    res.send("Página Inicial Cartão de Crédito");
+    res.send("Página Inicial dos Cartões de Crédito");
 };
 exports.creditoRoot = creditoRoot;
 const addCredito = (req, res) => {
@@ -22,11 +22,11 @@ const addCredito = (req, res) => {
                 if (error) {
                     res.end(error.message);
                 }
-                res.send(`Movimentação adicionada`);
+                res.send(`Movimentação adicionada.`);
             });
         }
         else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     }
     else {
@@ -61,19 +61,19 @@ const updateCredito = (req, res) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Crédito Updated");
+        res.send("Movimentação atualizada com sucesso.");
     });
 };
 exports.updateCredito = updateCredito;
 const deleteCreditoByQuery = (req, res) => {
     logger_1.default.info(req);
     let id = req.query.id;
-    let sql = `DELETE from professionals WHERE id="${id}"`;
+    let sql = `DELETE from credito WHERE id="${id}"`;
     db.all(sql, [], (error) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Credito Deleted");
+        res.send("Movimentação deletada com sucesso.");
     });
 };
 exports.deleteCreditoByQuery = deleteCreditoByQuery;

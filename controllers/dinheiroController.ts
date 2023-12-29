@@ -8,7 +8,7 @@ import logger from "../services/logger";
 let db: Database = createDbConnection();
 
 const dinheiroRoot = (req: Request, res: Response) => {
-    res.send("Página Inicial Dinheiro");
+    res.send("Página Inicial das Movimetações em Dinheiro");
 }
 
 const addDinheiro = (req: Request, res: Response) => {
@@ -27,10 +27,10 @@ const addDinheiro = (req: Request, res: Response) => {
                     if (error) {
                         res.end(error.message);
                     }
-                    res.send(`Dinheiro Adicionado`);
+                    res.send(`Movimentação adicionada.`);
                 })
         } else {
-            res.send("Erro na criação da Movimentação. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     } else {
         res.sendStatus(403);
@@ -73,7 +73,7 @@ const updateDinheiro = (req: Request, res: Response) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("SupportIT Updated");
+        res.send("Movimentação atualizada com sucesso.");
     });
 }
 
@@ -86,7 +86,7 @@ const deleteDinheiroByQuery = (req: Request, res: Response) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Dinheiro deletado");
+        res.send("Movimentação deletada com sucesso.");
     })
 }
 

@@ -8,7 +8,7 @@ import logger from "../services/logger";
 let db: Database = createDbConnection();
 
 const debitoRoot = (req: Request, res: Response) => {
-    res.send("Página Inicial Débitos");
+    res.send("Página Inicial dos Débitos em Conta Corrente");
 }
 
 const addDebito = (req: Request, res: Response) => {
@@ -27,10 +27,10 @@ const addDebito = (req: Request, res: Response) => {
                     if (error) {
                         res.end(error.message);
                     }
-                    res.send(`Débito adicionado`);
+                    res.send(`Movimentação adicionada.`);
                 })
         } else {
-            res.send("Erro na criação do Débito. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     } else {
         res.sendStatus(403);
@@ -62,9 +62,9 @@ const debitoList = (req: Request, res: Response) => {
 const updateDebito = (req: Request, res: Response) => {
     logger.info(req);
     let debito: Debito = req.body;
-    let sql = `UPDATE debito SET name="${debito.data}", 
-                                   shift="${debito.banco}", 
-                                   year="${debito.valor}"
+    let sql = `UPDATE debito SET data="${debito.data}", 
+                                   banco="${debito.banco}", 
+                                   valor="${debito.valor}"
                                    WHERE id="${debito.id}"
                                    `;
 
@@ -73,7 +73,7 @@ const updateDebito = (req: Request, res: Response) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Débito atualizado");
+        res.send("Movimentação atualizada com sucesso.");
     });
 }
 
@@ -86,7 +86,7 @@ const deleteDebitoByQuery = (req: Request, res: Response) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Débito deletado");
+        res.send("Movimentação deletada com sucesso.");
     })
 }
 

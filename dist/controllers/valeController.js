@@ -8,7 +8,7 @@ const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
 let db = (0, dbConfig_1.createDbConnection)();
 const valeRoot = (req, res) => {
-    res.send("Página Inicial Vale");
+    res.send("Página Inicial dos Vales Alimentação e Refeição");
 };
 exports.valeRoot = valeRoot;
 const addVale = (req, res) => {
@@ -16,17 +16,17 @@ const addVale = (req, res) => {
     let token = req.headers.authorization;
     if (token == "Bearer 12345") {
         let vale = req.body;
-        let sql = `INSERT INTO vale(data, motivo, valor) VALUES ("${vale.data}", "${vale.vale}", "${vale.valor}")`;
+        let sql = `INSERT INTO vale(data, vale, valor) VALUES ("${vale.data}", "${vale.vale}", "${vale.valor}")`;
         if (vale.data && vale.vale && vale.valor) {
             db.run(sql, (error) => {
                 if (error) {
                     res.end(error.message);
                 }
-                res.send(`Vale Adicionado`);
+                res.send(`Movimentação adicionada.`);
             });
         }
         else {
-            res.send("Erro na criação da Movimentação. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     }
     else {
@@ -52,7 +52,7 @@ const updateVale = (req, res) => {
     logger_1.default.info(req);
     let vale = req.body;
     let sql = `UPDATE vale SET data="${vale.data}", 
-                                   motivo="${vale.vale}", 
+                                   vale="${vale.vale}", 
                                    valor="${vale.valor}"
                                    WHERE id="${vale.id}"
                                    `;
@@ -60,7 +60,7 @@ const updateVale = (req, res) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("SupportIT Updated");
+        res.send("Movimentação atualizada com sucesso.");
     });
 };
 exports.updateVale = updateVale;
@@ -72,7 +72,7 @@ const deleteValeByQuery = (req, res) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Vale deletado");
+        res.send("Movimentação deletada com sucesso.");
     });
 };
 exports.deleteValeByQuery = deleteValeByQuery;

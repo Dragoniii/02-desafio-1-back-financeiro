@@ -8,7 +8,7 @@ const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
 let db = (0, dbConfig_1.createDbConnection)();
 const debitoRoot = (req, res) => {
-    res.send("Página Inicial Débitos");
+    res.send("Página Inicial dos Débitos em Conta Corrente");
 };
 exports.debitoRoot = debitoRoot;
 const addDebito = (req, res) => {
@@ -22,11 +22,11 @@ const addDebito = (req, res) => {
                 if (error) {
                     res.end(error.message);
                 }
-                res.send(`Débito adicionado`);
+                res.send(`Movimentação adicionada.`);
             });
         }
         else {
-            res.send("Erro na criação do Débito. Verifique se todos os campos foram preenchidos");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
         }
     }
     else {
@@ -51,16 +51,16 @@ exports.debitoList = debitoList;
 const updateDebito = (req, res) => {
     logger_1.default.info(req);
     let debito = req.body;
-    let sql = `UPDATE debito SET name="${debito.data}", 
-                                   shift="${debito.banco}", 
-                                   year="${debito.valor}"
+    let sql = `UPDATE debito SET data="${debito.data}", 
+                                   banco="${debito.banco}", 
+                                   valor="${debito.valor}"
                                    WHERE id="${debito.id}"
                                    `;
     db.all(sql, [], (error) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Débito atualizado");
+        res.send("Movimentação atualizada com sucesso.");
     });
 };
 exports.updateDebito = updateDebito;
@@ -72,7 +72,7 @@ const deleteDebitoByQuery = (req, res) => {
         if (error) {
             res.send(error.message);
         }
-        res.send("Débito deletado");
+        res.send("Movimentação deletada com sucesso.");
     });
 };
 exports.deleteDebitoByQuery = deleteDebitoByQuery;
