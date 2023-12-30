@@ -17,7 +17,6 @@ const addCredito = (req: Request, res: Response) => {
 
     if (token == "Bearer 12345") {
         let credito: Credito = req.body;
-        
 
         let sql = `INSERT INTO credito(data, banco, parcelado, vista) VALUES ("${credito.data}", "${credito.banco}", "${credito.parcelado}", "${credito.vista}")`;
 
@@ -85,10 +84,6 @@ const deleteCreditoByQuery = (req: Request, res: Response) => {
         res.send("Movimentação deletada com sucesso.");
     })
 }
-
-
-
-
 
 export {
     creditoRoot,

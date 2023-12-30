@@ -4,7 +4,6 @@ import { createDbConnection } from "../db/dbConfig";
 import { Database } from "sqlite3";
 import logger from "../services/logger";
 
-
 let db: Database = createDbConnection();
 
 const debitoRoot = (req: Request, res: Response) => {
@@ -35,13 +34,9 @@ const addDebito = (req: Request, res: Response) => {
     } else {
         res.sendStatus(403);
     }
-
-
-
 }
 
 const debitoList = (req: Request, res: Response) => {
-
 
     let debitoList: Debito[] = [];
 
@@ -89,10 +84,6 @@ const deleteDebitoByQuery = (req: Request, res: Response) => {
         res.send("Movimentação deletada com sucesso.");
     })
 }
-
-
-
-
 
 export {
     debitoRoot,

@@ -4,7 +4,6 @@ import { createDbConnection } from "../db/dbConfig";
 import { Database } from "sqlite3";
 import logger from "../services/logger";
 
-
 let db: Database = createDbConnection();
 
 const valeRoot = (req: Request, res: Response) => {
@@ -35,13 +34,9 @@ const addVale = (req: Request, res: Response) => {
     } else {
         res.sendStatus(403);
     }
-
-
-
 }
 
 const valeList = (req: Request, res: Response) => {
-
 
     let valeList: Vale[] = [];
 
@@ -89,10 +84,6 @@ const deleteValeByQuery = (req: Request, res: Response) => {
         res.send("Movimentação deletada com sucesso.");
     })
 }
-
-
-
-
 
 export {
     valeRoot,
