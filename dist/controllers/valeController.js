@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteValeByQuery = exports.updateVale = exports.valeList = exports.addVale = exports.valeRoot = void 0;
 const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const bearer = process.env.BEARER;
 let db = (0, dbConfig_1.createDbConnection)();
 const valeRoot = (req, res) => {
     res.send("Página Inicial dos Vales Alimentação e Refeição");
@@ -14,7 +17,7 @@ exports.valeRoot = valeRoot;
 const addVale = (req, res) => {
     logger_1.default.info(req);
     let token = req.headers.authorization;
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer) {
         let vale = req.body;
         let sql = `INSERT INTO vale(data, vale, valor) VALUES ("${vale.data}", "${vale.vale}", "${vale.valor}")`;
         if (vale.data && vale.vale && vale.valor) {

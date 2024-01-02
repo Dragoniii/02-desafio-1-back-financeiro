@@ -3,6 +3,10 @@ import Debito from "../models/debito";
 import { createDbConnection } from "../db/dbConfig";
 import { Database } from "sqlite3";
 import logger from "../services/logger";
+import dotenv from "dotenv";
+
+dotenv.config();
+const bearer = process.env.BEARER;
 
 let db: Database = createDbConnection();
 
@@ -15,7 +19,7 @@ const addDebito = (req: Request, res: Response) => {
 
     let token = req.headers.authorization;
 
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer)  {
         let debito: Debito = req.body;
 
         let sql = `INSERT INTO debito(data, banco, valor) VALUES ("${debito.data}", "${debito.banco}", "${debito.valor}")`;

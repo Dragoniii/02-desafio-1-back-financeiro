@@ -3,6 +3,10 @@ import Credito from "../models/credito";
 import { createDbConnection } from "../db/dbConfig";
 import { Database } from "sqlite3";
 import logger from "../services/logger";
+import dotenv from "dotenv";
+
+dotenv.config();
+const bearer = process.env.BEARER;
 
 let db: Database = createDbConnection();
 
@@ -15,7 +19,7 @@ const addCredito = (req: Request, res: Response) => {
 
     let token = req.headers.authorization;
 
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer) {
         let credito: Credito = req.body;
 
         let sql = `INSERT INTO credito(data, banco, parcelado, vista) VALUES ("${credito.data}", "${credito.banco}", "${credito.parcelado}", "${credito.vista}")`;

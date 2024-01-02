@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteDinheiroByQuery = exports.updateDinheiro = exports.dinheiroList = exports.addDinheiro = exports.dinheiroRoot = void 0;
 const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const bearer = process.env.BEARER;
 let db = (0, dbConfig_1.createDbConnection)();
 const dinheiroRoot = (req, res) => {
     res.send("Página Inicial das Movimetações em Dinheiro");
@@ -14,7 +17,7 @@ exports.dinheiroRoot = dinheiroRoot;
 const addDinheiro = (req, res) => {
     logger_1.default.info(req);
     let token = req.headers.authorization;
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer) {
         let dinheiro = req.body;
         let sql = `INSERT INTO dinheiro(data, motivo, valor) VALUES ("${dinheiro.data}", "${dinheiro.motivo}", "${dinheiro.valor}")`;
         if (dinheiro.data && dinheiro.motivo && dinheiro.valor) {

@@ -1,12 +1,13 @@
 import { Router } from "express";
 import {
-    addVale,
+    loginRoot,
+    doLogin
+} from "../controllers/loginController";
 
-} from "../controllers/login";
+const loginRouter = Router();
 
+loginRouter.get("/", loginRoot);
 
-const login = Router();
+loginRouter.post("/doLogin", doLogin);
 
-login.post("/addVale", addVale);
-
-export default login;
+export default loginRouter;

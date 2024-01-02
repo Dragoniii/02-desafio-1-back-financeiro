@@ -3,6 +3,10 @@ import Vale from "../models/vale";
 import { createDbConnection } from "../db/dbConfig";
 import { Database } from "sqlite3";
 import logger from "../services/logger";
+import dotenv from "dotenv";
+
+dotenv.config();
+const bearer = process.env.BEARER;
 
 let db: Database = createDbConnection();
 
@@ -15,7 +19,7 @@ const addVale = (req: Request, res: Response) => {
 
     let token = req.headers.authorization;
 
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer) {
         let vale: Vale = req.body;
 
         let sql = `INSERT INTO vale(data, vale, valor) VALUES ("${vale.data}", "${vale.vale}", "${vale.valor}")`;

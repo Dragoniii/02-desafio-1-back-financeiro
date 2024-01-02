@@ -3,6 +3,10 @@ import Dinheiro from "../models/dinheiro";
 import { createDbConnection } from "../db/dbConfig";
 import { Database } from "sqlite3";
 import logger from "../services/logger";
+import dotenv from "dotenv";
+
+dotenv.config();
+const bearer = process.env.BEARER;
 
 let db: Database = createDbConnection();
 
@@ -15,7 +19,7 @@ const addDinheiro = (req: Request, res: Response) => {
 
     let token = req.headers.authorization;
 
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer) {
         let dinheiro: Dinheiro = req.body;
 
         let sql = `INSERT INTO dinheiro(data, motivo, valor) VALUES ("${dinheiro.data}", "${dinheiro.motivo}", "${dinheiro.valor}")`;

@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteDebitoByQuery = exports.updateDebito = exports.debitoList = exports.addDebito = exports.debitoRoot = void 0;
 const dbConfig_1 = require("../db/dbConfig");
 const logger_1 = __importDefault(require("../services/logger"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const bearer = process.env.BEARER;
 let db = (0, dbConfig_1.createDbConnection)();
 const debitoRoot = (req, res) => {
     res.send("Página Inicial dos Débitos em Conta Corrente");
@@ -14,7 +17,7 @@ exports.debitoRoot = debitoRoot;
 const addDebito = (req, res) => {
     logger_1.default.info(req);
     let token = req.headers.authorization;
-    if (token == "Bearer 12345") {
+    if (token == "Bearer " + bearer) {
         let debito = req.body;
         let sql = `INSERT INTO debito(data, banco, valor) VALUES ("${debito.data}", "${debito.banco}", "${debito.valor}")`;
         if (debito.data && debito.banco && debito.valor) {
