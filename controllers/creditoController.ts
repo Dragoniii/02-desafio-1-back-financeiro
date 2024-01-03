@@ -12,6 +12,9 @@ let db: Database = createDbConnection();
 
 const creditoRoot = (req: Request, res: Response) => {
     res.send("Página Inicial dos Cartões de Crédito");
+    //res.status(200).json({ mensagem:  "Página Inicial dos Cartões de Crédito2"})
+    //res.status(200).json({ token:  "Seu Token é " + bearer})
+    //qef
 }
 
 const addCredito = (req: Request, res: Response) => {

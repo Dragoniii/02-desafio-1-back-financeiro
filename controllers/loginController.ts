@@ -16,8 +16,8 @@ const doLogin = (req: Request, res: Response) => {
     let login: any = req.body;
 
     if (login.senha == senha && login.usuario == usuario){
-        res.send("Seu Token é " + bearer);
-    }
+        res.status(200).send(bearer)
+    } else res.status(403).send()
 }
 
 export {

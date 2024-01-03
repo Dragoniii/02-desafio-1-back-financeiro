@@ -12,6 +12,9 @@ const bearer = process.env.BEARER;
 let db = (0, dbConfig_1.createDbConnection)();
 const creditoRoot = (req, res) => {
     res.send("Página Inicial dos Cartões de Crédito");
+    //res.status(200).json({ mensagem:  "Página Inicial dos Cartões de Crédito2"})
+    //res.status(200).json({ token:  "Seu Token é " + bearer})
+    //qef
 };
 exports.creditoRoot = creditoRoot;
 const addCredito = (req, res) => {
