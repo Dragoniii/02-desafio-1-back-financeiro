@@ -19,7 +19,7 @@ const addDebito = (req: Request, res: Response) => {
 
     let token = req.headers.authorization;
 
-    if (token == "Bearer " + bearer)  {
+    if (token == bearer)  {
         let debito: Debito = req.body;
 
         let sql = `INSERT INTO debito(data, banco, valor) VALUES ("${debito.data}", "${debito.banco}", "${debito.valor}")`;

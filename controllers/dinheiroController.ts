@@ -19,7 +19,7 @@ const addDinheiro = (req: Request, res: Response) => {
 
     let token = req.headers.authorization;
 
-    if (token == "Bearer " + bearer) {
+    if (token == bearer) {
         let dinheiro: Dinheiro = req.body;
 
         let sql = `INSERT INTO dinheiro(data, motivo, valor) VALUES ("${dinheiro.data}", "${dinheiro.motivo}", "${dinheiro.valor}")`;

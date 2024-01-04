@@ -17,7 +17,7 @@ exports.dinheiroRoot = dinheiroRoot;
 const addDinheiro = (req, res) => {
     logger_1.default.info(req);
     let token = req.headers.authorization;
-    if (token == "Bearer " + bearer) {
+    if (token == bearer) {
         let dinheiro = req.body;
         let sql = `INSERT INTO dinheiro(data, motivo, valor) VALUES ("${dinheiro.data}", "${dinheiro.motivo}", "${dinheiro.valor}")`;
         if (dinheiro.data && dinheiro.motivo && dinheiro.valor) {

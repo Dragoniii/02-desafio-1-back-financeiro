@@ -17,7 +17,7 @@ exports.valeRoot = valeRoot;
 const addVale = (req, res) => {
     logger_1.default.info(req);
     let token = req.headers.authorization;
-    if (token == "Bearer " + bearer) {
+    if (token == bearer) {
         let vale = req.body;
         let sql = `INSERT INTO vale(data, vale, valor) VALUES ("${vale.data}", "${vale.vale}", "${vale.valor}")`;
         if (vale.data && vale.vale && vale.valor) {

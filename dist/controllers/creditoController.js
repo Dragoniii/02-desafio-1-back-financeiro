@@ -20,7 +20,7 @@ exports.creditoRoot = creditoRoot;
 const addCredito = (req, res) => {
     logger_1.default.info(req);
     let token = req.headers.authorization;
-    if (token == "Bearer " + bearer) {
+    if (token == bearer) {
         let credito = req.body;
         let sql = `INSERT INTO credito(data, banco, parcelado, vista) VALUES ("${credito.data}", "${credito.banco}", "${credito.parcelado}", "${credito.vista}")`;
         if (credito.data && credito.banco && credito.parcelado && credito.vista) {
