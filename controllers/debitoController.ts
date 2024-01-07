@@ -16,10 +16,9 @@ const debitoRoot = (req: Request, res: Response) => {
 
 const addDebito = (req: Request, res: Response) => {
     logger.info(req);
-
     let token = req.headers.authorization;
 
-    if (token == bearer)  {
+    if (token == bearer) {
         let debito: Debito = req.body;
 
         let sql = `INSERT INTO debito(data, banco, valor) VALUES ("${debito.data}", "${debito.banco}", "${debito.valor}")`;
@@ -33,7 +32,7 @@ const addDebito = (req: Request, res: Response) => {
                     res.send(`Movimentação adicionada.`);
                 })
         } else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
     } else {
         res.sendStatus(403);
@@ -41,52 +40,69 @@ const addDebito = (req: Request, res: Response) => {
 }
 
 const debitoList = (req: Request, res: Response) => {
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let debitoList: Debito[] = [];
 
-    let debitoList: Debito[] = [];
+        let sql = `SELECT * FROM debito`;
 
-    let sql = `SELECT * FROM debito`;
-
-    db.all(sql, [], (error: Error, rows: Debito[]) => {
-        if (error) {
-            logger.error(error.message);
-            res.send(error.message);
+        db.all(sql, [], (error: Error, rows: Debito[]) => {
+            if (error) {
+                logger.error(error.message);
+                res.send(error.message);
+            }
+            rows.forEach((row: Debito) => { debitoList.push(row) });
+            logger.info(req);
+            res.send(debitoList);
         }
-        rows.forEach((row: Debito) => { debitoList.push(row) });
-        logger.info(req);
-        res.send(debitoList);
+        );
+    } else {
+        res.sendStatus(403);
     }
-    );
 }
 
 const updateDebito = (req: Request, res: Response) => {
     logger.info(req);
-    let debito: Debito = req.body;
-    let sql = `UPDATE debito SET data="${debito.data}", 
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let debito: Debito = req.body;
+        let sql = `UPDATE debito SET data="${debito.data}", 
                                    banco="${debito.banco}", 
                                    valor="${debito.valor}"
                                    WHERE id="${debito.id}"
                                    `;
 
-
-    db.all(sql, [], (error: Error) => {
-        if (error) {
-            res.send(error.message);
+        if (debito.data && debito.banco && debito.valor) {
+            db.all(sql, [], (error: Error) => {
+                if (error) {
+                    res.send(error.message);
+                }
+                res.send("Movimentação atualizada com sucesso.");
+            });
+        } else {
+            res.send("Erro na atualização da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
-        res.send("Movimentação atualizada com sucesso.");
-    });
+    } else {
+        res.sendStatus(403);
+    }
 }
 
 const deleteDebitoByQuery = (req: Request, res: Response) => {
     logger.info(req);
-    let id = req.query.id;
-    let sql = `DELETE from debito WHERE id="${id}"`;
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let id = req.query.id;
+        let sql = `DELETE from debito WHERE id="${id}"`;
 
-    db.all(sql, [], (error: Error) => {
-        if (error) {
-            res.send(error.message);
-        }
-        res.send("Movimentação deletada com sucesso.");
-    })
+        db.all(sql, [], (error: Error) => {
+            if (error) {
+                res.send(error.message);
+            }
+            res.send("Movimentação deletada com sucesso.");
+        })
+    } else {
+        res.sendStatus(403);
+    }
 }
 
 export {

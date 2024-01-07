@@ -29,7 +29,7 @@ const addDinheiro = (req, res) => {
             });
         }
         else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
     }
     else {
@@ -38,44 +38,67 @@ const addDinheiro = (req, res) => {
 };
 exports.addDinheiro = addDinheiro;
 const dinheiroList = (req, res) => {
-    let dinheiroList = [];
-    let sql = `SELECT * FROM dinheiro`;
-    db.all(sql, [], (error, rows) => {
-        if (error) {
-            logger_1.default.error(error.message);
-            res.send(error.message);
-        }
-        rows.forEach((row) => { dinheiroList.push(row); });
-        logger_1.default.info(req);
-        res.send(dinheiroList);
-    });
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let dinheiroList = [];
+        let sql = `SELECT * FROM dinheiro`;
+        db.all(sql, [], (error, rows) => {
+            if (error) {
+                logger_1.default.error(error.message);
+                res.send(error.message);
+            }
+            rows.forEach((row) => { dinheiroList.push(row); });
+            logger_1.default.info(req);
+            res.send(dinheiroList);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.dinheiroList = dinheiroList;
 const updateDinheiro = (req, res) => {
     logger_1.default.info(req);
-    let dinheiro = req.body;
-    let sql = `UPDATE dinheiro SET data="${dinheiro.data}", 
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let dinheiro = req.body;
+        let sql = `UPDATE dinheiro SET data="${dinheiro.data}", 
                                    motivo="${dinheiro.motivo}", 
                                    valor="${dinheiro.valor}"
                                    WHERE id="${dinheiro.id}"
                                    `;
-    db.all(sql, [], (error) => {
-        if (error) {
-            res.send(error.message);
+        if (dinheiro.data && dinheiro.motivo && dinheiro.valor) {
+            db.all(sql, [], (error) => {
+                if (error) {
+                    res.send(error.message);
+                }
+                res.send("Movimentação atualizada com sucesso.");
+            });
         }
-        res.send("Movimentação atualizada com sucesso.");
-    });
+        else {
+            res.send("Erro na atualização da movimentação. Verifique se todos os campos foram preenchidos.");
+        }
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.updateDinheiro = updateDinheiro;
 const deleteDinheiroByQuery = (req, res) => {
     logger_1.default.info(req);
-    let id = req.query.id;
-    let sql = `DELETE from dinheiro WHERE id="${id}"`;
-    db.all(sql, [], (error) => {
-        if (error) {
-            res.send(error.message);
-        }
-        res.send("Movimentação deletada com sucesso.");
-    });
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let id = req.query.id;
+        let sql = `DELETE from dinheiro WHERE id="${id}"`;
+        db.all(sql, [], (error) => {
+            if (error) {
+                res.send(error.message);
+            }
+            res.send("Movimentação deletada com sucesso.");
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.deleteDinheiroByQuery = deleteDinheiroByQuery;

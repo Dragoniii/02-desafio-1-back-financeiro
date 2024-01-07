@@ -18,7 +18,6 @@ const addVale = (req: Request, res: Response) => {
     logger.info(req);
 
     let token = req.headers.authorization;
-
     if (token == bearer) {
         let vale: Vale = req.body;
 
@@ -33,7 +32,7 @@ const addVale = (req: Request, res: Response) => {
                     res.send(`Movimentação adicionada.`);
                 })
         } else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
     } else {
         res.sendStatus(403);
@@ -41,52 +40,69 @@ const addVale = (req: Request, res: Response) => {
 }
 
 const valeList = (req: Request, res: Response) => {
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let valeList: Vale[] = [];
 
-    let valeList: Vale[] = [];
+        let sql = `SELECT * FROM vale`;
 
-    let sql = `SELECT * FROM vale`;
-
-    db.all(sql, [], (error: Error, rows: Vale[]) => {
-        if (error) {
-            logger.error(error.message);
-            res.send(error.message);
+        db.all(sql, [], (error: Error, rows: Vale[]) => {
+            if (error) {
+                logger.error(error.message);
+                res.send(error.message);
+            }
+            rows.forEach((row: Vale) => { valeList.push(row) });
+            logger.info(req);
+            res.send(valeList);
         }
-        rows.forEach((row: Vale) => { valeList.push(row) });
-        logger.info(req);
-        res.send(valeList);
+        );
+    } else {
+        res.sendStatus(403);
     }
-    );
 }
 
 const updateVale = (req: Request, res: Response) => {
-    logger.info(req);
-    let vale: Vale = req.body;
-    let sql = `UPDATE vale SET data="${vale.data}", 
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        logger.info(req);
+        let vale: Vale = req.body;
+        let sql = `UPDATE vale SET data="${vale.data}", 
                                    vale="${vale.vale}", 
                                    valor="${vale.valor}"
                                    WHERE id="${vale.id}"
                                    `;
 
-
-    db.all(sql, [], (error: Error) => {
-        if (error) {
-            res.send(error.message);
+        if (vale.data && vale.vale && vale.valor) {
+            db.all(sql, [], (error: Error) => {
+                if (error) {
+                    res.send(error.message);
+                }
+                res.send("Movimentação atualizada com sucesso.");
+            });
+        } else {
+            res.send("Erro na atualização da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
-        res.send("Movimentação atualizada com sucesso.");
-    });
+    } else {
+        res.sendStatus(403);
+    }
 }
 
 const deleteValeByQuery = (req: Request, res: Response) => {
-    logger.info(req);
-    let id = req.query.id;
-    let sql = `DELETE from vale WHERE id="${id}"`;
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        logger.info(req);
+        let id = req.query.id;
+        let sql = `DELETE from vale WHERE id="${id}"`;
 
-    db.all(sql, [], (error: Error) => {
-        if (error) {
-            res.send(error.message);
-        }
-        res.send("Movimentação deletada com sucesso.");
-    })
+        db.all(sql, [], (error: Error) => {
+            if (error) {
+                res.send(error.message);
+            }
+            res.send("Movimentação deletada com sucesso.");
+        })
+    } else {
+        res.sendStatus(403);
+    }
 }
 
 export {

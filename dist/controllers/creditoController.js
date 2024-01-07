@@ -12,9 +12,6 @@ const bearer = process.env.BEARER;
 let db = (0, dbConfig_1.createDbConnection)();
 const creditoRoot = (req, res) => {
     res.send("Página Inicial dos Cartões de Crédito");
-    //res.status(200).json({ mensagem:  "Página Inicial dos Cartões de Crédito2"})
-    //res.status(200).json({ token:  "Seu Token é " + bearer})
-    //qef
 };
 exports.creditoRoot = creditoRoot;
 const addCredito = (req, res) => {
@@ -32,7 +29,7 @@ const addCredito = (req, res) => {
             });
         }
         else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
     }
     else {
@@ -41,45 +38,68 @@ const addCredito = (req, res) => {
 };
 exports.addCredito = addCredito;
 const creditoList = (req, res) => {
-    let creditoList = [];
-    let sql = `SELECT * FROM credito`;
-    db.all(sql, [], (error, rows) => {
-        if (error) {
-            logger_1.default.error(error.message);
-            res.send(error.message);
-        }
-        rows.forEach((row) => { creditoList.push(row); });
-        logger_1.default.info(req);
-        res.send(creditoList);
-    });
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let creditoList = [];
+        let sql = `SELECT * FROM credito`;
+        db.all(sql, [], (error, rows) => {
+            if (error) {
+                logger_1.default.error(error.message);
+                res.send(error.message);
+            }
+            rows.forEach((row) => { creditoList.push(row); });
+            logger_1.default.info(req);
+            res.send(creditoList);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.creditoList = creditoList;
 const updateCredito = (req, res) => {
     logger_1.default.info(req);
-    let credito = req.body;
-    let sql = `UPDATE credito SET data="${credito.data}",  
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let credito = req.body;
+        let sql = `UPDATE credito SET data="${credito.data}",  
                                         banco="${credito.banco}",
                                         parcelado="${credito.parcelado}",
                                         vista="${credito.vista}"
                                         WHERE id="${credito.id}"
                                    `;
-    db.all(sql, [], (error) => {
-        if (error) {
-            res.send(error.message);
+        if (credito.data && credito.banco && credito.parcelado && credito.vista) {
+            db.all(sql, [], (error) => {
+                if (error) {
+                    res.send(error.message);
+                }
+                res.send("Movimentação atualizada com sucesso.");
+            });
         }
-        res.send("Movimentação atualizada com sucesso.");
-    });
+        else {
+            res.send("Erro na atualização da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
+        }
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.updateCredito = updateCredito;
 const deleteCreditoByQuery = (req, res) => {
     logger_1.default.info(req);
-    let id = req.query.id;
-    let sql = `DELETE from credito WHERE id="${id}"`;
-    db.all(sql, [], (error) => {
-        if (error) {
-            res.send(error.message);
-        }
-        res.send("Movimentação deletada com sucesso.");
-    });
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let id = req.query.id;
+        let sql = `DELETE from credito WHERE id="${id}"`;
+        db.all(sql, [], (error) => {
+            if (error) {
+                res.send(error.message);
+            }
+            res.send("Movimentação deletada com sucesso.");
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.deleteCreditoByQuery = deleteCreditoByQuery;

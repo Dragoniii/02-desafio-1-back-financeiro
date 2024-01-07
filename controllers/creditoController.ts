@@ -12,14 +12,10 @@ let db: Database = createDbConnection();
 
 const creditoRoot = (req: Request, res: Response) => {
     res.send("Página Inicial dos Cartões de Crédito");
-    //res.status(200).json({ mensagem:  "Página Inicial dos Cartões de Crédito2"})
-    //res.status(200).json({ token:  "Seu Token é " + bearer})
-    //qef
 }
 
 const addCredito = (req: Request, res: Response) => {
     logger.info(req);
-
     let token = req.headers.authorization;
 
     if (token == bearer) {
@@ -36,7 +32,7 @@ const addCredito = (req: Request, res: Response) => {
                     res.send(`Movimentação adicionada.`);
                 })
         } else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
     } else {
         res.sendStatus(403);
@@ -44,52 +40,69 @@ const addCredito = (req: Request, res: Response) => {
 }
 
 const creditoList = (req: Request, res: Response) => {
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let creditoList: Credito[] = [];
 
-    let creditoList: Credito[] = [];
+        let sql = `SELECT * FROM credito`;
 
-    let sql = `SELECT * FROM credito`;
-
-    db.all(sql, [], (error: Error, rows: Credito[]) => {
-        if (error) {
-            logger.error(error.message);
-            res.send(error.message);
+        db.all(sql, [], (error: Error, rows: Credito[]) => {
+            if (error) {
+                logger.error(error.message);
+                res.send(error.message);
+            }
+            rows.forEach((row: Credito) => { creditoList.push(row) });
+            logger.info(req);
+            res.send(creditoList);
         }
-        rows.forEach((row: Credito) => { creditoList.push(row) });
-        logger.info(req);
-        res.send(creditoList);
+        );
+    } else {
+        res.sendStatus(403);
     }
-    );
 }
 
 const updateCredito = (req: Request, res: Response) => {
     logger.info(req);
-    let credito: Credito = req.body;
-    let sql = `UPDATE credito SET data="${credito.data}",  
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let credito: Credito = req.body;
+        let sql = `UPDATE credito SET data="${credito.data}",  
                                         banco="${credito.banco}",
                                         parcelado="${credito.parcelado}",
                                         vista="${credito.vista}"
                                         WHERE id="${credito.id}"
                                    `;
-
-    db.all(sql, [], (error: Error) => {
-        if (error) {
-            res.send(error.message);
+        if (credito.data && credito.banco && credito.parcelado && credito.vista) {
+            db.all(sql, [], (error: Error) => {
+                if (error) {
+                    res.send(error.message);
+                }
+                res.send("Movimentação atualizada com sucesso.");
+            });
+        } else {
+            res.send("Erro na atualização da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
-        res.send("Movimentação atualizada com sucesso.");
-    });
+    } else {
+        res.sendStatus(403);
+    }
 }
 
 const deleteCreditoByQuery = (req: Request, res: Response) => {
     logger.info(req);
-    let id = req.query.id;
-    let sql = `DELETE from credito WHERE id="${id}"`;
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let id = req.query.id;
+        let sql = `DELETE from credito WHERE id="${id}"`;
 
-    db.all(sql, [], (error: Error) => {
-        if (error) {
-            res.send(error.message);
-        }
-        res.send("Movimentação deletada com sucesso.");
-    })
+        db.all(sql, [], (error: Error) => {
+            if (error) {
+                res.send(error.message);
+            }
+            res.send("Movimentação deletada com sucesso.");
+        })
+    } else {
+        res.sendStatus(403);
+    }
 }
 
 export {

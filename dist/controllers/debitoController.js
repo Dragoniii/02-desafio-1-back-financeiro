@@ -29,7 +29,7 @@ const addDebito = (req, res) => {
             });
         }
         else {
-            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos.");
+            res.send("Erro na criação da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
         }
     }
     else {
@@ -38,44 +38,67 @@ const addDebito = (req, res) => {
 };
 exports.addDebito = addDebito;
 const debitoList = (req, res) => {
-    let debitoList = [];
-    let sql = `SELECT * FROM debito`;
-    db.all(sql, [], (error, rows) => {
-        if (error) {
-            logger_1.default.error(error.message);
-            res.send(error.message);
-        }
-        rows.forEach((row) => { debitoList.push(row); });
-        logger_1.default.info(req);
-        res.send(debitoList);
-    });
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let debitoList = [];
+        let sql = `SELECT * FROM debito`;
+        db.all(sql, [], (error, rows) => {
+            if (error) {
+                logger_1.default.error(error.message);
+                res.send(error.message);
+            }
+            rows.forEach((row) => { debitoList.push(row); });
+            logger_1.default.info(req);
+            res.send(debitoList);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.debitoList = debitoList;
 const updateDebito = (req, res) => {
     logger_1.default.info(req);
-    let debito = req.body;
-    let sql = `UPDATE debito SET data="${debito.data}", 
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let debito = req.body;
+        let sql = `UPDATE debito SET data="${debito.data}", 
                                    banco="${debito.banco}", 
                                    valor="${debito.valor}"
                                    WHERE id="${debito.id}"
                                    `;
-    db.all(sql, [], (error) => {
-        if (error) {
-            res.send(error.message);
+        if (debito.data && debito.banco && debito.valor) {
+            db.all(sql, [], (error) => {
+                if (error) {
+                    res.send(error.message);
+                }
+                res.send("Movimentação atualizada com sucesso.");
+            });
         }
-        res.send("Movimentação atualizada com sucesso.");
-    });
+        else {
+            res.send("Erro na atualização da movimentação. Verifique se todos os campos foram preenchidos corretamente.");
+        }
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.updateDebito = updateDebito;
 const deleteDebitoByQuery = (req, res) => {
     logger_1.default.info(req);
-    let id = req.query.id;
-    let sql = `DELETE from debito WHERE id="${id}"`;
-    db.all(sql, [], (error) => {
-        if (error) {
-            res.send(error.message);
-        }
-        res.send("Movimentação deletada com sucesso.");
-    });
+    let token = req.headers.authorization;
+    if (token == bearer) {
+        let id = req.query.id;
+        let sql = `DELETE from debito WHERE id="${id}"`;
+        db.all(sql, [], (error) => {
+            if (error) {
+                res.send(error.message);
+            }
+            res.send("Movimentação deletada com sucesso.");
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
 };
 exports.deleteDebitoByQuery = deleteDebitoByQuery;
