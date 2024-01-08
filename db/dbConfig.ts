@@ -13,8 +13,8 @@ const createDbConnection = () => {
 
     db.exec(`CREATE TABLE IF NOT EXISTS debito (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        data VARCHAR(50),
-        banco VARCHAR(50),
+        data VARCHAR(30),
+        banco VARCHAR(30),
         valor REAL
         );
         `);
@@ -22,8 +22,8 @@ const createDbConnection = () => {
 
     db.exec(`CREATE TABLE IF NOT EXISTS credito (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        data VARCHAR(50),
-        banco VARCHAR(50),
+        data VARCHAR(30),
+        banco VARCHAR(30),
         parcelado REAL,
         vista REAL
         );
@@ -31,21 +31,28 @@ const createDbConnection = () => {
 
     db.exec(`CREATE TABLE IF NOT EXISTS vale (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        data VARCHAR(50),
-        vale VARCHAR(50),
+        data VARCHAR(30),
+        vale VARCHAR(30),
         valor REAL
         );
         `);
 
     db.exec(`CREATE TABLE IF NOT EXISTS dinheiro (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        data VARCHAR(50),
-        motivo VARCHAR(50),
+        data VARCHAR(30),
+        motivo VARCHAR(30),
         valor INTEGER
+        );
+        `);
+
+    db.exec(`CREATE TABLE IF NOT EXISTS justificativa (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        fonte VARCHAR(30),
+        diagnostico VARCHAR(300),
+        resolucao VARCHAR(300)
         );
         `);
     return db;
 }
-
 
 export { createDbConnection }

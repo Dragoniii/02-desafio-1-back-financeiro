@@ -5,6 +5,7 @@ import debitoRouter from "../routes/debitoRouter";
 import dinheiroRouter from "../routes/dinheiroRouter";
 import loginRouter from "../routes/login";
 import valeRouter from "../routes/valeRouter";
+import justificativaRouter from "../routes/justificativaRouter";
 import cors from "cors";
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/debito", debitoRouter);
 app.use("/dinheiro", dinheiroRouter);
 app.use("/vale", valeRouter);
 app.use("/login", loginRouter);
+app.use("/justificativa", justificativaRouter);
 
 app.listen(port, () => {
     console.log("Connection with SQLite has been estabilished");
